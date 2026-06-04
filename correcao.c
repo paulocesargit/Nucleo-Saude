@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 
+#define DADOS "clientes.txt"
 typedef struct
 {
     char cpf[15];
@@ -28,8 +30,30 @@ typedef struct
 
 } Cliente;
 
+int validarData(char data[])
+{
+    int dia, mes, ano;
+
+    if (strlen(data) != 8)
+        return 0;
+
+    sscanf(data, "%2d%2d%4d", &dia, &mes, &ano);
+
+    if (dia < 1 || dia > 31)
+        return 0;
+
+    if (mes < 1 || mes > 12)
+        return 0;
+
+    if (ano < 2026 || ano > 2030)
+        return 0;
+
+    return 1;
+}
+
 void cadastrarCliente()
 {
+
     Cliente cliente;
 
     printf("\n===== CADASTRO DE CLIENTE =====\n");
@@ -47,7 +71,7 @@ void cadastrarCliente()
     scanf("%s", cliente.email);
 
     printf("Idade: ");
-    scanf("%s", cliente.idade);
+    scanf("%d", &cliente.idade);
 
     printf("Telefone: ");
     scanf("%s", cliente.telefone);
@@ -84,8 +108,20 @@ void cadastrarCliente()
     printf("Escolha o plano: ");
     scanf("%d", &cliente.plano);
 
-    printf("Data de vencimento do plano: ");
-    scanf("%s", cliente.vencimentoPlano);
+    do
+    {
+        printf("Data de vencimento (DDMMAAAA): ");
+        scanf("%s", cliente.vencimentoPlano);
+
+        if (strchr(cliente.vencimentoPlano, '/') != NULL)
+        {
+            printf("Nao use barras!\n");
+        }
+
+        if (!validarData(cliente.vencimentoPlano))
+            printf("Data invalida!\n");
+
+    } while (!validarData(cliente.vencimentoPlano));
 
     printf("\nCliente cadastrado com sucesso!\n");
 }
@@ -145,6 +181,10 @@ float calcularPlano(Cliente cliente)
     return valor;
 }
 
+void listarVencimentosMes()
+{
+}
+
 void mostrarRelatorios()
 {
 }
@@ -190,7 +230,7 @@ void menu()
             break;
 
         case 6:
-            printf("\nFuncao ainda nao implementada.\n");
+            listarVencimentosMes();
             break;
 
         case 0:
