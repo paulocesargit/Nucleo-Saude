@@ -40,13 +40,18 @@ int validarData(char data[])
     sscanf(data, "%2d%2d%4d", &dia, &mes, &ano);
 
     if (dia < 1 || dia > 31)
+    {
         return 0;
-
+    }
     if (mes < 1 || mes > 12)
+    {
         return 0;
+    }
 
     if (ano < 2026 || ano > 2030)
+    {
         return 0;
+    }
 
     return 1;
 }
