@@ -15,7 +15,7 @@ typedef struct
     char nome[100];
     int sexo;
     char email[100];
-    char dataNascimento[11];
+    int idade;
     char telefone[15];
 
     // Dependentes
@@ -46,8 +46,8 @@ void cadastrarCliente()
     printf("Email: ");
     scanf("%s", cliente.email);
 
-    printf("Data de nascimento (dd/mm/aaaa): ");
-    scanf("%s", cliente.dataNascimento);
+    printf("Idade: ");
+    scanf("%s", cliente.idade);
 
     printf("Telefone: ");
     scanf("%s", cliente.telefone);
@@ -107,9 +107,42 @@ void removerCliente()
 {
 }
 
-float calcularPlano()
+float calcularPlano(Cliente cliente)
 {
-    return 0;
+    float valor = 0;
+
+    switch (cliente.plano)
+    {
+    case 1:
+        valor = 300.00;
+        break;
+
+    case 2:
+        valor = 400.00;
+        break;
+
+    case 3:
+        valor = 200.00;
+        break;
+
+    case 4:
+        valor = 500.00;
+        break;
+    }
+
+    if (cliente.sexo == 1 && cliente.idade >= 13 && cliente.idade <= 35)
+        valor += valor * 0.30;
+
+    if (cliente.qtdDependentes > 1)
+        valor -= valor * 0.20;
+
+    if (cliente.idade < 13)
+        valor -= valor * 0.30;
+
+    if (cliente.idade >= 60)
+        valor += valor * 0.40;
+
+    return valor;
 }
 
 void mostrarRelatorios()
