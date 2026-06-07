@@ -8,7 +8,7 @@ typedef struct
     char nome[100];
     char dataNascimento[11];
 
-} Dependente; // nessesario outro struct pq a pessoa pode ter mais de 1 dependente!!
+} Dependente; // necessario outro struct pq a pessoa pode ter mais de 1 dependente!!
 
 typedef struct
 {
@@ -142,10 +142,61 @@ void listarClientes()
 
 void editarCliente()
 {
+    /*
+    // editar dados titular
+
+    void editarCliente(Cliente clientes[], int total)
+{
+    char cpf[15];
+
+    printf("CPF do cliente: ");
+    scanf("%s", cpf);
+
+    printf("\n ====editar dados titular=== \n");
+    printf("1 - Editar nome\n");
+    printf("2 - Editar idade\n");
+    printf("3 - Editar email\n");
+    printf("4 - Editar telefone\n");
+
+    int op;
+    scanf("%d",&op);
+
+    switch(op)
+    {
+        case 1:
+            printf("Novo nome: ");
+            scanf("%s", cliente[posicao].nome);
+            break;
+        case 2:
+            printf("Nova idade: ");
+            scanf("%d", &cliente[posicao].idade);
+            break;
+        case 3:
+            printf("novo email: ");
+            scanf("%s", &cliente[posicao].email);
+            break;
+        case 4:
+            printf("novo telefone: ")
+            scanf("%s", &cliente[posicao].telefone);
+            break;
+        default:
+            printf("\n opcao invalida \n");
+
+    }
+
+printf("Cliente atualizado!\n");
+
+*/
+
+
+
 }
 
 void removerCliente()
 {
+    /*FILE *DADOS;
+    DADOS = fopen("clientes.txt", "r+b");
+    */
 }
 
 float calcularPlano(Cliente cliente)
