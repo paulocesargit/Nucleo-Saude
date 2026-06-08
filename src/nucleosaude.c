@@ -117,26 +117,71 @@ void cadastrarCliente()
 
     printf("\n===== CADASTRO DE CLIENTE =====\n");
 
-    printf("CPF: ");
-    scanf("%s", cliente.cpf);
+    do
+    {
+        printf("CPF: ");
+        scanf("%s", cliente.cpf);
+
+        if (strlen(cliente.cpf) != 11)
+        {
+            printf("CPF invalido! Digite 11 numeros.\n");
+        }
+
+    } while (strlen(cliente.cpf) != 11);
 
     printf("Nome: ");
     scanf(" %s", cliente.nome);
 
-    printf("Sexo (1-Feminino / 2-Masculino): ");
-    scanf("%d", &cliente.sexo);
+    do
+    {
+        printf("Sexo (1-Feminino / 2-Masculino): ");
+        scanf("%d", &cliente.sexo);
+
+        if (cliente.sexo != 1 && cliente.sexo != 2)
+        {
+            printf("Opcao invalida! Digite 1 ou 2.\n");
+        }
+
+    } while (cliente.sexo != 1 && cliente.sexo != 2);
 
     printf("Email: ");
     scanf("%s", cliente.email);
 
-    printf("Idade: ");
-    scanf("%d", &cliente.idade);
+    do
+    {
+        printf("Idade: ");
+        scanf("%d", &cliente.idade);
 
-    printf("Telefone: ");
-    scanf("%s", cliente.telefone);
+        if (cliente.idade < 0 || cliente.idade > 120)
+        {
+            printf("Idade invalida!\n");
+        }
 
-    printf("\nQuantidade de dependentes: ");
-    scanf("%d", &cliente.qtdDependentes);
+    } while (cliente.idade < 0 || cliente.idade > 120);
+
+    do
+    {
+        printf("Telefone: ");
+        scanf("%s", cliente.telefone);
+
+        if (strlen(cliente.telefone) != 11)
+        {
+            printf("Telefone invalido!\n");
+        }
+
+    } while (strlen(cliente.telefone) != 11);
+
+    do
+    {
+        printf("\nQuantidade de dependentes: ");
+        scanf("%d", &cliente.qtdDependentes);
+
+        if (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10)
+        {
+            printf("Quantidade invalida! Digite entre 0 e 10.\n");
+        }
+
+    } while (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10);
 
     if (cliente.qtdDependentes > 10)
     {
@@ -164,8 +209,18 @@ void cadastrarCliente()
     printf("3 - Prata\n");
     printf("4 - Esmeralda\n");
 
-    printf("Escolha o plano: ");
-    scanf("%d", &cliente.plano);
+    do
+    {
+
+        printf("Escolha o plano: ");
+        scanf("%d", &cliente.plano);
+
+        if (cliente.plano < 1 || cliente.plano > 4)
+        {
+            printf("Opcao invalida! Digite de 1 a 4.\n");
+        }
+
+    } while (cliente.plano < 1 || cliente.plano > 4);
 
     cliente.valorPlano = calcularPlano(cliente);
 
