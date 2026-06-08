@@ -130,7 +130,7 @@ void cadastrarCliente()
     } while (strlen(cliente.cpf) != 11);
 
     printf("Nome: ");
-    scanf(" %s", cliente.nome);
+    scanf("%s", cliente.nome);
 
     do
     {
@@ -152,12 +152,12 @@ void cadastrarCliente()
         printf("Idade: ");
         scanf("%d", &cliente.idade);
 
-        if (cliente.idade < 0 || cliente.idade > 120)
+        if (cliente.idade < 1 || cliente.idade > 120)
         {
             printf("Idade invalida!\n");
         }
 
-    } while (cliente.idade < 0 || cliente.idade > 120);
+    } while (cliente.idade < 1 || cliente.idade > 120);
 
     do
     {
@@ -182,11 +182,6 @@ void cadastrarCliente()
         }
 
     } while (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10);
-
-    if (cliente.qtdDependentes > 10)
-    {
-        cliente.qtdDependentes = 10;
-    }
 
     for (int i = 0; i < cliente.qtdDependentes; i++)
     {
@@ -235,7 +230,9 @@ void cadastrarCliente()
         }
 
         if (!validarData(cliente.vencimentoPlano))
+        {
             printf("Data invalida!\n");
+        }
 
     } while (!validarData(cliente.vencimentoPlano));
 
