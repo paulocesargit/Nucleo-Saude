@@ -32,14 +32,30 @@ typedef struct
 
 int validarData(char data[])
 {
-    int dia, mes, ano;
+    int dia, mes, ano, maxDias;
 
     if (strlen(data) != 8)
         return 0;
 
     sscanf(data, "%2d%2d%4d", &dia, &mes, &ano);
 
-    if (dia < 1 || dia > 31)
+    if (mes == 2)
+    {
+
+        maxDias = 28;
+    }
+    else if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
+    {
+
+        maxDias = 30;
+    }
+    else
+    {
+
+        maxDias = 31;
+    }
+
+    if (dia < 1 || dia > maxDias)
     {
         return 0;
     }
@@ -54,6 +70,44 @@ int validarData(char data[])
     }
 
     return 1;
+}
+
+float calcularPlano(Cliente cliente)
+{
+    float valor = 0;
+
+    switch (cliente.plano)
+    {
+    case 1:
+        valor = 300.00;
+        break;
+
+    case 2:
+        valor = 400.00;
+        break;
+
+    case 3:
+        valor = 200.00;
+        break;
+
+    case 4:
+        valor = 500.00;
+        break;
+    }
+
+    if (cliente.sexo == 1 && cliente.idade >= 13 && cliente.idade <= 35)
+        valor += valor * 0.30;
+
+    if (cliente.qtdDependentes > 1)
+        valor -= valor * 0.20;
+
+    if (cliente.idade < 13)
+        valor -= valor * 0.30;
+
+    if (cliente.idade >= 60)
+        valor += valor * 0.40;
+
+    return valor;
 }
 
 void cadastrarCliente()
@@ -113,6 +167,8 @@ void cadastrarCliente()
     printf("Escolha o plano: ");
     scanf("%d", &cliente.plano);
 
+    cliente.valorPlano = calcularPlano(cliente);
+
     do
     {
         printf("Data de vencimento (DDMMAAAA): ");
@@ -128,7 +184,20 @@ void cadastrarCliente()
 
     } while (!validarData(cliente.vencimentoPlano));
 
+    FILE *dados = fopen(DADOS, "ab");
+
+    if (dados == NULL)
+    {
+        printf("\nErro ao abrir arquivo!\n");
+        return;
+    }
+
+    fwrite(&cliente, sizeof(Cliente), 1, dados);
+
+    fclose(dados);
+
     printf("\nCliente cadastrado com sucesso!\n");
+    printf("Valor final do plano: R$ %.2f\n", cliente.valorPlano);
 }
 
 int buscarCPF()
@@ -148,50 +217,86 @@ void removerCliente()
 {
 }
 
-float calcularPlano(Cliente cliente)
-{
-    float valor = 0;
-
-    switch (cliente.plano)
-    {
-    case 1:
-        valor = 300.00;
-        break;
-
-    case 2:
-        valor = 400.00;
-        break;
-
-    case 3:
-        valor = 200.00;
-        break;
-
-    case 4:
-        valor = 500.00;
-        break;
-    }
-
-    if (cliente.sexo == 1 && cliente.idade >= 13 && cliente.idade <= 35)
-        valor += valor * 0.30;
-
-    if (cliente.qtdDependentes > 1)
-        valor -= valor * 0.20;
-
-    if (cliente.idade < 13)
-        valor -= valor * 0.30;
-
-    if (cliente.idade >= 60)
-        valor += valor * 0.40;
-
-    return valor;
-}
-
 void listarVencimentosMes()
 {
+    int mes;
+
+    printf("\nDigite o mes (1-12): ");
+    scanf("%d", &mes);
+
+    FILE *dados = fopen(DADOS, "rb");
+
+    if (dados == NULL)
+    {
+        printf("\nDados nao encontrado.\n");
+        return;
+    }
+
+    Cliente cliente;
+    int dia, mesVenc, ano;
+    int encontrou = 0;
+
+    while (fread(&cliente, sizeof(Cliente), 1, dados))
+    {
+        sscanf(cliente.vencimentoPlano, "%2d%2d%4d", &dia, &mesVenc, &ano);
+
+        if (mesVenc == mes)
+        {
+            printf("\nNome: %s", cliente.nome);
+            printf("\nCPF: %s", cliente.cpf);
+            printf("\nVencimento: %s\n", cliente.vencimentoPlano);
+            encontrou = 1;
+        }
+    }
+
+    fclose(dados);
+
+    if (!encontrou)
+    {
+        printf("\nNenhum vencimento encontrado.\n");
+    }
 }
 
-void mostrarRelatorios()
+void listarporplano()
 {
+
+    int plano;
+
+    printf("\n1 - Ouro");
+    printf("\n2 - Diamante");
+    printf("\n3 - Prata");
+    printf("\n4 - Esmeralda");
+
+    printf("\n\nPlano desejado: ");
+    scanf("%d", &plano);
+
+    FILE *dados = fopen(DADOS, "rb");
+
+    if (dados == NULL)
+    {
+        printf("\nDados nao encontrado.\n");
+        return;
+    }
+
+    Cliente cliente;
+    int encontrou = 0;
+
+    while (fread(&cliente, sizeof(Cliente), 1, dados))
+    {
+        if (cliente.plano == plano)
+        {
+            printf("\nCPF: %s", cliente.cpf);
+            printf("\nNome: %s", cliente.nome);
+            printf("\nValor: %.2f\n", cliente.valorPlano);
+
+            encontrou = 1;
+        }
+    }
+
+    fclose(dados);
+
+    if (!encontrou)
+        printf("\nNenhum cliente encontrado.\n");
 }
 
 void menu()
@@ -231,7 +336,7 @@ void menu()
             break;
 
         case 5:
-            mostrarRelatorios();
+            listarporplano();
             break;
 
         case 6:
