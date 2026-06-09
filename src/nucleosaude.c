@@ -1,5 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+#define VERMELHO "\033[31m"
+#define VERDE "\033[32m"
+#define AMARELO "\033[33m"
+#define AZUL "\033[34m"
+#define CIANO "\033[36m"
+#define RESET "\033[0m"
 
 #define DADOS "clientes.txt"
 typedef struct
@@ -115,7 +123,9 @@ void cadastrarCliente()
 
     Cliente cliente;
 
-    printf("\n===== CADASTRO DE CLIENTE =====\n");
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "       CADASTRO DE CLIENTE             \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
 
     do
     {
@@ -124,7 +134,7 @@ void cadastrarCliente()
 
         if (strlen(cliente.cpf) != 11)
         {
-            printf("CPF invalido! Digite 11 numeros.\n");
+            printf(AMARELO "CPF invalido! Digite 11 numeros.\n" RESET);
         }
 
     } while (strlen(cliente.cpf) != 11);
@@ -139,7 +149,7 @@ void cadastrarCliente()
 
         if (cliente.sexo != 1 && cliente.sexo != 2)
         {
-            printf("Opcao invalida! Digite 1 ou 2.\n");
+            printf(AMARELO "Opcao invalida! Digite 1 ou 2.\n" RESET);
         }
 
     } while (cliente.sexo != 1 && cliente.sexo != 2);
@@ -154,7 +164,7 @@ void cadastrarCliente()
 
         if (cliente.idade < 1 || cliente.idade > 120)
         {
-            printf("Idade invalida!\n");
+            printf(AMARELO "Idade invalida!\n" RESET);
         }
 
     } while (cliente.idade < 1 || cliente.idade > 120);
@@ -166,7 +176,7 @@ void cadastrarCliente()
 
         if (strlen(cliente.telefone) != 11)
         {
-            printf("Telefone invalido!\n");
+            printf(AMARELO "Telefone invalido!\n" RESET);
         }
 
     } while (strlen(cliente.telefone) != 11);
@@ -178,14 +188,18 @@ void cadastrarCliente()
 
         if (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10)
         {
-            printf("Quantidade invalida! Digite entre 0 e 10.\n");
+            printf(AMARELO "Quantidade invalida! Digite entre 0 e 10.\n" RESET);
         }
 
     } while (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10);
+    system("cls");
 
     for (int i = 0; i < cliente.qtdDependentes; i++)
     {
-        printf("\n===== DEPENDENTE %d =====\n", i + 1);
+
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "           DEPENDENTE %d           \n" RESET, i + 1);
+        printf(CIANO "====================================\n\n" RESET);
 
         printf("CPF: ");
         scanf("%s", cliente.dependentes[i].cpf);
@@ -195,9 +209,12 @@ void cadastrarCliente()
 
         printf("Data de nascimento: ");
         scanf("%s", cliente.dependentes[i].dataNascimento);
+        system("cls");
     }
 
-    printf("\n===== PLANO DE SAUDE =====\n");
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "         PLANO DE SAUDE              \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
 
     printf("1 - Ouro\n");
     printf("2 - Diamante\n");
@@ -212,7 +229,7 @@ void cadastrarCliente()
 
         if (cliente.plano < 1 || cliente.plano > 4)
         {
-            printf("Opcao invalida! Digite de 1 a 4.\n");
+            printf(AMARELO "Opcao invalida! Digite de 1 a 4.\n" RESET);
         }
 
     } while (cliente.plano < 1 || cliente.plano > 4);
@@ -226,12 +243,12 @@ void cadastrarCliente()
 
         if (strchr(cliente.vencimentoPlano, '/') != NULL)
         {
-            printf("Nao use barras!\n");
+            printf(VERMELHO "Nao use barras!\n" RESET);
         }
 
         if (!validarData(cliente.vencimentoPlano))
         {
-            printf("Data invalida!\n");
+            printf(AMARELO "Data invalida!\n" RESET);
         }
 
     } while (!validarData(cliente.vencimentoPlano));
@@ -240,7 +257,7 @@ void cadastrarCliente()
 
     if (dados == NULL)
     {
-        printf("\nErro ao abrir arquivo!\n");
+        printf(VERMELHO "\nErro ao abrir arquivo!\n" RESET);
         return;
     }
 
@@ -248,8 +265,9 @@ void cadastrarCliente()
 
     fclose(dados);
 
-    printf("\nCliente cadastrado com sucesso!\n");
+    printf(VERDE "\nCliente cadastrado com sucesso!\n" RESET);
     printf("Valor final do plano: R$ %.2f\n", cliente.valorPlano);
+    system("cls");
 }
 
 int buscarCPF()
@@ -273,14 +291,18 @@ void listarVencimentosMes()
 {
     int mes;
 
-    printf("\nDigite o mes (1-12): ");
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "           DIGITE O MES (1-12)           \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
+
+    printf("\nDigite: ");
     scanf("%d", &mes);
 
     FILE *dados = fopen(DADOS, "rb");
 
     if (dados == NULL)
     {
-        printf("\nDados nao encontrado.\n");
+        printf(VERMELHO "\nDados nao encontrado.\n" RESET);
         return;
     }
 
@@ -305,7 +327,7 @@ void listarVencimentosMes()
 
     if (!encontrou)
     {
-        printf("\nNenhum vencimento encontrado.\n");
+        printf(VERMELHO "\nNenhum vencimento encontrado.\n" RESET);
     }
 }
 
@@ -314,19 +336,23 @@ void listarporplano()
 
     int plano;
 
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "           PLANO DESEJADO           \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
+
     printf("\n1 - Ouro");
     printf("\n2 - Diamante");
     printf("\n3 - Prata");
-    printf("\n4 - Esmeralda");
+    printf("\n4 - Esmeralda\n");
 
-    printf("\n\nPlano desejado: ");
+    printf("\nEscolha: ");
     scanf("%d", &plano);
 
     FILE *dados = fopen(DADOS, "rb");
 
     if (dados == NULL)
     {
-        printf("\nDados nao encontrado.\n");
+        printf(VERMELHO "\nDados nao encontrado.\n" RESET);
         return;
     }
 
@@ -348,7 +374,7 @@ void listarporplano()
     fclose(dados);
 
     if (!encontrou)
-        printf("\nNenhum cliente encontrado.\n");
+        printf(AMARELO "\nNenhum cliente encontrado.\n" RESET);
 }
 
 void menu()
@@ -357,17 +383,23 @@ void menu()
 
     while (opcao != 0)
     {
-        printf("\n===== NUCLEO SAUDE =====\n");
-        printf("1 - Cadastrar Cliente\n");
-        printf("2 - Editar Cliente\n");
-        printf("3 - Remover Cliente\n");
-        printf("4 - Listagem Geral\n");
-        printf("5 - Listagem por Plano\n");
-        printf("6 - Listagem dos Vencimentos do Plano de Saude do Mes\n");
-        printf("0 - Sair\n");
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "         NUCLEO SAUDE              \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
+        printf(VERDE "1" RESET " - Cadastrar Cliente\n");
+        printf(VERDE "2" RESET " - Editar Cliente\n");
+        printf(VERDE "3" RESET " - Remover Cliente\n");
+        printf(VERDE "4" RESET " - Listagem Geral\n");
+        printf(VERDE "5" RESET " - Listagem por Plano\n");
+        printf(VERDE "6" RESET " - Vencimentos do Mes\n");
+        printf(AMARELO "0" RESET " - Sair\n");
+
+        printf(CIANO "\n====================================\n\n" RESET);
 
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
+        system("cls");
 
         switch (opcao)
         {
