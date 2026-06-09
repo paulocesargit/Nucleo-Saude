@@ -103,17 +103,19 @@ float calcularPlano(Cliente cliente)
         break;
     }
 
-    if (cliente.sexo == 1 && cliente.idade >= 13 && cliente.idade <= 35)
-        valor += valor * 0.30;
+    float valorBase = valor;
+
+    if (cliente.sexo == 1 && cliente.idade >= 13 && cliente.idade < 35)
+        valor += valorBase * 0.30;
 
     if (cliente.qtdDependentes > 1)
-        valor -= valor * 0.20;
+        valor -= valorBase * 0.20;
 
     if (cliente.idade < 13)
-        valor -= valor * 0.30;
+        valor -= valorBase * 0.30;
 
     if (cliente.idade >= 60)
-        valor += valor * 0.40;
+        valor += valorBase * 0.40;
 
     return valor;
 }
@@ -267,6 +269,11 @@ void cadastrarCliente()
 
     printf(VERDE "\nCliente cadastrado com sucesso!\n" RESET);
     printf("Valor final do plano: R$ %.2f\n", cliente.valorPlano);
+
+    printf("\nPressione ENTER para voltar ao menu...");
+    getchar();
+    getchar();
+
     system("cls");
 }
 
@@ -329,6 +336,12 @@ void listarVencimentosMes()
     {
         printf(VERMELHO "\nNenhum vencimento encontrado.\n" RESET);
     }
+
+    printf("\nPressione ENTER para voltar ao menu...");
+    getchar();
+    getchar();
+
+    system("cls");
 }
 
 void listarporplano()
@@ -375,6 +388,12 @@ void listarporplano()
 
     if (!encontrou)
         printf(AMARELO "\nNenhum cliente encontrado.\n" RESET);
+
+    printf("\nPressione ENTER para voltar ao menu...");
+    getchar();
+    getchar();
+
+    system("cls");
 }
 
 void menu()
