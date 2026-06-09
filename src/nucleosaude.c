@@ -301,9 +301,17 @@ void listarVencimentosMes()
     printf(CIANO "\n====================================\n" RESET);
     printf(CIANO "           DIGITE O MES (1-12)           \n" RESET);
     printf(CIANO "====================================\n\n" RESET);
+    do
+    {
+        printf("\nDigite: ");
+        scanf("%d", &mes);
 
-    printf("\nDigite: ");
-    scanf("%d", &mes);
+        if (mes < 1 || mes > 12)
+        {
+            printf(AMARELO "Digite um mes valido" RESET);
+        }
+
+    } while (mes < 1 || mes > 12);
 
     FILE *dados = fopen(DADOS, "rb");
 
@@ -312,10 +320,20 @@ void listarVencimentosMes()
         printf(VERMELHO "\nDados nao encontrado.\n" RESET);
         return;
     }
-
+    system("cls");
+    char *meses[] = {
+        "", "JANEIRO", "FEVEREIRO", "MARCO",
+        "ABRIL", "MAIO", "JUNHO",
+        "JULHO", "AGOSTO", "SETEMBRO",
+        "OUTUBRO", "NOVEMBRO", "DEZEMBRO"};
     Cliente cliente;
     int dia, mesVenc, ano;
     int encontrou = 0;
+    int contador = 1;
+
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "     VENCIMENTOS DE %s      \n" RESET, meses[mes]);
+    printf(CIANO "====================================\n\n" RESET);
 
     while (fread(&cliente, sizeof(Cliente), 1, dados))
     {
@@ -323,14 +341,20 @@ void listarVencimentosMes()
 
         if (mesVenc == mes)
         {
+            printf("\nCliente %d\n", contador);
             printf("\nNome: %s", cliente.nome);
             printf("\nCPF: %s", cliente.cpf);
             printf("\nVencimento: %s\n", cliente.vencimentoPlano);
+            printf("\n------------------------------------\n");
+
+            contador++;
             encontrou = 1;
         }
     }
 
     fclose(dados);
+
+    printf("\nTotal de vencimentos encontrados: %d\n", contador - 1);
 
     if (!encontrou)
     {
@@ -358,8 +382,18 @@ void listarporplano()
     printf("\n3 - Prata");
     printf("\n4 - Esmeralda\n");
 
-    printf("\nEscolha: ");
-    scanf("%d", &plano);
+    do
+    {
+
+        printf("\nEscolha: ");
+        scanf("%d", &plano);
+
+        if (plano < 1 || plano > 4)
+        {
+            printf(AMARELO "Opcao invalida! Digite de 1 a 4.\n" RESET);
+        }
+
+    } while (plano < 1 || plano > 4);
 
     FILE *dados = fopen(DADOS, "rb");
 
@@ -368,18 +402,55 @@ void listarporplano()
         printf(VERMELHO "\nDados nao encontrado.\n" RESET);
         return;
     }
+    system("cls");
+
+    switch (plano)
+    {
+    case 1:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "            PLANO OURO             \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+        break;
+
+    case 2:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "          PLANO DIAMANTE           \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+        break;
+
+    case 3:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "            PLANO PRATA            \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+        break;
+
+    case 4:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "          PLANO ESMERALDA          \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+        break;
+
+    default:
+        printf(VERMELHO "\nPlano invalido!\n" RESET);
+        return;
+    }
 
     Cliente cliente;
     int encontrou = 0;
+    int contador = 1;
 
     while (fread(&cliente, sizeof(Cliente), 1, dados))
     {
         if (cliente.plano == plano)
         {
+            printf("\nCliente %d\n", contador);
             printf("\nCPF: %s", cliente.cpf);
             printf("\nNome: %s", cliente.nome);
             printf("\nValor: %.2f\n", cliente.valorPlano);
 
+            printf("\n------------------------------------\n");
+
+            contador++;
             encontrou = 1;
         }
     }
