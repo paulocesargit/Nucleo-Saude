@@ -360,9 +360,12 @@ void editarCliente()
     printf("Opcao: ");
     scanf("%d", &op);
 
+    system("cls");
+
     switch (op)
     {
     case 1:
+
         printf("Novo nome: ");
         scanf("%s", cliente.nome);
         break;
@@ -406,7 +409,7 @@ void editarCliente()
 void removerCliente()
 {
     printf(CIANO "\n====================================\n" RESET);
-    printf(CIANO "         Editar cliente              \n" RESET);
+    printf(CIANO "         REMOVER CLIENTE              \n" RESET);
     printf(CIANO "====================================\n\n" RESET);
 
     char cpf[11];
