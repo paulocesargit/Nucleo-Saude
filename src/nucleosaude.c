@@ -277,21 +277,166 @@ void cadastrarCliente()
     system("cls");
 }
 
-int buscarCPF()
+int buscarCPF(char cpf[])
 {
-    return 0;
+    FILE *dados = fopen(DADOS, "rb");
+
+    if(dados == NULL)
+    {
+        printf("Erro ao abrir arquivo!\n");
+        return -1;
+    }
+
+    Cliente cliente;
+    int pos = 0;
+
+    while(fread(&cliente, sizeof(Cliente), 1, dados))
+    {
+        if(strcmp(cliente.cpf, cpf) == 0)
+        {
+            printf("\nCliente encontrado!\n");
+            printf("Nome: %s\n", cliente.nome);
+
+            fclose(dados);
+            return pos;
+        }
+
+        pos++;
+    }
+
+    printf("\nCliente nao cadastrado!\n");
+
+    fclose(dados);
+    return -1;
 }
 
 void listarClientes()
 {
+    
 }
 
 void editarCliente()
 {
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "         Editar cliente              \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
+    char cpf[11];
+
+    printf("Digite o CPF do cliente: ");
+    scanf("%s", cpf);
+
+    int pos = buscarCPF(cpf);
+
+    if(pos == -1)
+    {
+        return;
+    }
+
+    FILE *dados = fopen(DADOS, "r+b");
+
+    if(dados == NULL)
+    {
+        printf("Erro ao abrir arquivo!\n");
+        return;
+    }
+
+    Cliente cliente;
+
+    fseek(dados, pos * sizeof(Cliente), SEEK_SET);
+
+    fread(&cliente, sizeof(Cliente), 1, dados);
+
+    int op;
+
+    printf("\n=== EDITAR CLIENTE ===\n");
+    printf("1 - Nome\n");
+    printf("2 - Idade\n");
+    printf("3 - Email\n");
+    printf("4 - Telefone\n");
+    printf("Opcao: ");
+    scanf("%d", &op);
+
+    switch(op)
+    {
+        case 1:
+            printf("Novo nome: ");
+            scanf("%s", cliente.nome);
+            break;
+
+        case 2:
+            printf("Nova idade: ");
+            scanf("%d", &cliente.idade);
+            break;
+
+        case 3:
+            printf("Novo email: ");
+            scanf("%s", cliente.email);
+            break;
+
+        case 4:
+            printf("Novo telefone: ");
+            scanf("%s", cliente.telefone);
+            break;
+
+        default:
+            printf("Opcao invalida!\n");
+            fclose(dados);
+            return;
+    }
+
+    fseek(dados, pos * sizeof(Cliente), SEEK_SET);
+
+    fwrite(&cliente, sizeof(Cliente), 1, dados);
+
+    fclose(dados);
+
+    printf("\nCliente atualizado com sucesso!\n");
 }
 
 void removerCliente()
 {
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "         Editar cliente              \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+        
+    char cpf[11];
+
+    printf("Digite o CPF do cliente que deseja remover: ");
+    scanf("%s", cpf);
+
+    if(buscarCPF(cpf) == -1)
+    {
+        printf("Cliente nao encontrado!\n");
+        return;
+    }
+
+    FILE *dados = fopen(DADOS, "rb");
+    FILE *temp = fopen("temp.dat", "wb");
+
+    if(dados == NULL || temp == NULL)
+    {
+        printf("Erro ao abrir arquivo!\n");
+        return;
+    }
+
+    Cliente cliente;
+
+    while(fread(&cliente, sizeof(Cliente), 1, dados))
+    {
+        if(strcmp(cliente.cpf, cpf) != 0)
+        {
+            fwrite(&cliente, sizeof(Cliente), 1, temp);
+        }
+    }
+
+    fclose(dados);
+    fclose(temp);
+
+    remove(DADOS);
+    rename("temp.dat", DADOS);
+
+    printf("\nCliente removido com sucesso!\n");
 }
 
 void listarVencimentosMes()
