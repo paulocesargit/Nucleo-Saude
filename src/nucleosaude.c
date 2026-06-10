@@ -281,7 +281,7 @@ int buscarCPF(char cpf[])
 {
     FILE *dados = fopen(DADOS, "rb");
 
-    if(dados == NULL)
+    if (dados == NULL)
     {
         printf("Erro ao abrir arquivo!\n");
         return -1;
@@ -290,9 +290,9 @@ int buscarCPF(char cpf[])
     Cliente cliente;
     int pos = 0;
 
-    while(fread(&cliente, sizeof(Cliente), 1, dados))
+    while (fread(&cliente, sizeof(Cliente), 1, dados))
     {
-        if(strcmp(cliente.cpf, cpf) == 0)
+        if (strcmp(cliente.cpf, cpf) == 0)
         {
             printf("\nCliente encontrado!\n");
             printf("Nome: %s\n", cliente.nome);
@@ -312,14 +312,13 @@ int buscarCPF(char cpf[])
 
 void listarClientes()
 {
-    
 }
 
 void editarCliente()
 {
-        printf(CIANO "\n====================================\n" RESET);
-        printf(CIANO "         Editar cliente              \n" RESET);
-        printf(CIANO "====================================\n\n" RESET);
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "         Editar cliente              \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
 
     char cpf[11];
 
@@ -328,16 +327,16 @@ void editarCliente()
 
     int pos = buscarCPF(cpf);
 
-    if(pos == -1)
+    if (pos == -1)
     {
         return;
     }
 
     FILE *dados = fopen(DADOS, "r+b");
 
-    if(dados == NULL)
+    if (dados == NULL)
     {
-        printf("Erro ao abrir arquivo!\n");
+        printf(VERMELHO "Erro ao abrir arquivo!\n" RESET);
         return;
     }
 
@@ -347,9 +346,13 @@ void editarCliente()
 
     fread(&cliente, sizeof(Cliente), 1, dados);
 
+    system("cls");
+
     int op;
 
-    printf("\n=== EDITAR CLIENTE ===\n");
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "    ESCOLHA UMA OPCAO PARA ALTERAR\n    " RESET);
+    printf(CIANO "=======================================\n" RESET);
     printf("1 - Nome\n");
     printf("2 - Idade\n");
     printf("3 - Email\n");
@@ -357,32 +360,32 @@ void editarCliente()
     printf("Opcao: ");
     scanf("%d", &op);
 
-    switch(op)
+    switch (op)
     {
-        case 1:
-            printf("Novo nome: ");
-            scanf("%s", cliente.nome);
-            break;
+    case 1:
+        printf("Novo nome: ");
+        scanf("%s", cliente.nome);
+        break;
 
-        case 2:
-            printf("Nova idade: ");
-            scanf("%d", &cliente.idade);
-            break;
+    case 2:
+        printf("Nova idade: ");
+        scanf("%d", &cliente.idade);
+        break;
 
-        case 3:
-            printf("Novo email: ");
-            scanf("%s", cliente.email);
-            break;
+    case 3:
+        printf("Novo email: ");
+        scanf("%s", cliente.email);
+        break;
 
-        case 4:
-            printf("Novo telefone: ");
-            scanf("%s", cliente.telefone);
-            break;
+    case 4:
+        printf("Novo telefone: ");
+        scanf("%s", cliente.telefone);
+        break;
 
-        default:
-            printf("Opcao invalida!\n");
-            fclose(dados);
-            return;
+    default:
+        printf("Opcao invalida!\n");
+        fclose(dados);
+        return;
     }
 
     fseek(dados, pos * sizeof(Cliente), SEEK_SET);
@@ -391,21 +394,27 @@ void editarCliente()
 
     fclose(dados);
 
-    printf("\nCliente atualizado com sucesso!\n");
+    printf(VERDE "\nCliente atualizado com sucesso!\n" RESET);
+    printf("Pressione ENTER para Continuar....\n ");
+
+    getchar();
+    getchar();
+
+    system("cls");
 }
 
 void removerCliente()
 {
-        printf(CIANO "\n====================================\n" RESET);
-        printf(CIANO "         Editar cliente              \n" RESET);
-        printf(CIANO "====================================\n\n" RESET);
-        
+    printf(CIANO "\n====================================\n" RESET);
+    printf(CIANO "         Editar cliente              \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
+
     char cpf[11];
 
     printf("Digite o CPF do cliente que deseja remover: ");
     scanf("%s", cpf);
 
-    if(buscarCPF(cpf) == -1)
+    if (buscarCPF(cpf) == -1)
     {
         printf("Cliente nao encontrado!\n");
         return;
@@ -414,7 +423,7 @@ void removerCliente()
     FILE *dados = fopen(DADOS, "rb");
     FILE *temp = fopen("temp.dat", "wb");
 
-    if(dados == NULL || temp == NULL)
+    if (dados == NULL || temp == NULL)
     {
         printf("Erro ao abrir arquivo!\n");
         return;
@@ -422,9 +431,9 @@ void removerCliente()
 
     Cliente cliente;
 
-    while(fread(&cliente, sizeof(Cliente), 1, dados))
+    while (fread(&cliente, sizeof(Cliente), 1, dados))
     {
-        if(strcmp(cliente.cpf, cpf) != 0)
+        if (strcmp(cliente.cpf, cpf) != 0)
         {
             fwrite(&cliente, sizeof(Cliente), 1, temp);
         }
