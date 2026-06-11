@@ -1,5 +1,7 @@
 *.exe
 *.o
 
+output/
 
-clientes.txt
+temp.dat
+clientetxts.
