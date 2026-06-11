@@ -357,6 +357,7 @@ void editarCliente()
     printf("2 - Idade\n");
     printf("3 - Email\n");
     printf("4 - Telefone\n");
+    printf("0 - Sair\n");
     printf("Opcao: ");
     scanf("%d", &op);
 
@@ -408,6 +409,12 @@ void editarCliente()
         system("cls");
         break;
 
+    case 0:
+        printf("\nEncerrando sistema...\n");
+
+        system("cls");
+        break;
+
     default:
         printf(AMARELO "Opcao invalida!\n" RESET);
         fclose(dados);
@@ -444,7 +451,7 @@ void removerCliente()
 
     if (buscarCPF(cpf) == -1)
     {
-        printf("Cliente nao encontrado!\n");
+        printf(AMARELO "Cliente nao encontrado!\n" RESET);
         return;
     }
 
@@ -453,7 +460,7 @@ void removerCliente()
 
     if (dados == NULL || temp == NULL)
     {
-        printf("Erro ao abrir arquivo!\n");
+        printf(VERMELHO "Erro ao abrir arquivo!\n" RESET);
         return;
     }
 

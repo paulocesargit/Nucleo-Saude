@@ -75,7 +75,7 @@ gcc main.c -o nucleosaude
     </td>
     <td align="center">
       <a href="https://github.com/ThiagoST9" >
-        <img src="https://avatars.githubusercontent.com/u/259233211?v=4" width="100px;" alt="Foto de Luis Vilas"/><br>
+        <img src="https://avatars.githubusercontent.com/u/259233211?v=4" width="100px;" alt="Foto de Thiago Ribeiro"/><br>
         <sub>
           <b>Thiago Ribeiro</b>
         </sub>
