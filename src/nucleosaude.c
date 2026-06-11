@@ -351,8 +351,8 @@ void editarCliente()
     int op;
 
     printf(CIANO "\n====================================\n" RESET);
-    printf(CIANO "    ESCOLHA UMA OPCAO PARA ALTERAR\n    " RESET);
-    printf(CIANO "=======================================\n" RESET);
+    printf(CIANO "      ESCOLHA O DADO A ALTERAR     \n" RESET);
+    printf(CIANO "====================================\n\n" RESET);
     printf("1 - Nome\n");
     printf("2 - Idade\n");
     printf("3 - Email\n");
@@ -365,28 +365,51 @@ void editarCliente()
     switch (op)
     {
     case 1:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "          ALTERAR NOME             \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
 
         printf("Novo nome: ");
         scanf("%s", cliente.nome);
+
+        system("cls");
         break;
 
     case 2:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "         ALTERAR IDADE             \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
         printf("Nova idade: ");
         scanf("%d", &cliente.idade);
+
+        system("cls");
         break;
 
     case 3:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "         ALTERAR EMAIL             \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
         printf("Novo email: ");
         scanf("%s", cliente.email);
+
+        system("cls");
         break;
 
     case 4:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "       ALTERAR TELEFONE            \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
         printf("Novo telefone: ");
         scanf("%s", cliente.telefone);
+
+        system("cls");
         break;
 
     default:
-        printf("Opcao invalida!\n");
+        printf(AMARELO "Opcao invalida!\n" RESET);
         fclose(dados);
         return;
     }
@@ -412,10 +435,12 @@ void removerCliente()
     printf(CIANO "         REMOVER CLIENTE              \n" RESET);
     printf(CIANO "====================================\n\n" RESET);
 
-    char cpf[11];
+    char cpf[12];
 
     printf("Digite o CPF do cliente que deseja remover: ");
     scanf("%s", cpf);
+
+    system("cls");
 
     if (buscarCPF(cpf) == -1)
     {
@@ -448,7 +473,13 @@ void removerCliente()
     remove(DADOS);
     rename("temp.dat", DADOS);
 
-    printf("\nCliente removido com sucesso!\n");
+    printf(VERDE "\nCliente removido com sucesso!\n" RESET);
+
+    printf("\nPressione ENTER para voltar ao menu...");
+    getchar();
+    getchar();
+
+    system("cls");
 }
 
 void listarVencimentosMes()
