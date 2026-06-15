@@ -120,6 +120,28 @@ float calcularPlano(Cliente cliente)
     return valor;
 }
 
+int cpfJaCadastrado(char cpf[])
+{
+    FILE *dados = fopen(DADOS, "rb");
+
+    if (dados == NULL)
+        return 0;
+
+    Cliente cliente;
+
+    while (fread(&cliente, sizeof(Cliente), 1, dados))
+    {
+        if (strcmp(cliente.cpf, cpf) == 0)
+        {
+            fclose(dados);
+            return 1;
+        }
+    }
+
+    fclose(dados);
+    return 0;
+}
+
 void cadastrarCliente()
 {
 
@@ -129,26 +151,26 @@ void cadastrarCliente()
     printf(CIANO "       CADASTRO DE CLIENTE             \n" RESET);
     printf(CIANO "====================================\n\n" RESET);
 
-do
-{
-    printf("CPF: ");
-    scanf("%s", cliente.cpf);
-
-    if (strlen(cliente.cpf) != 11)
+    do
     {
-        printf(AMARELO "CPF invalido! Digite 11 numeros.\n" RESET);
-        continue;
-    }
+        printf("CPF: ");
+        scanf("%s", cliente.cpf);
 
-    if (cpfJaCadastrado(cliente.cpf))
-    {
-        printf(VERMELHO "CPF ja cadastrado! Digite outro.\n" RESET);
-        continue;
-    }
+        if (strlen(cliente.cpf) != 11)
+        {
+            printf(AMARELO "CPF invalido! Digite 11 numeros.\n" RESET);
+            continue;
+        }
 
-    break;
+        if (cpfJaCadastrado(cliente.cpf))
+        {
+            printf(VERMELHO "CPF ja cadastrado! Digite outro.\n" RESET);
+            continue;
+        }
 
-} while (1);
+        break;
+
+    } while (1);
 
     printf("Nome: ");
     scanf("%s", cliente.nome);
@@ -286,7 +308,7 @@ do
     system("cls");
 }
 
-int buscarCPF(char cpf[]) // funcao criada para a verificaçao de cpf, antes estava no cadastro agr esta a parte
+int buscarCPF(char cpf[])
 {
     FILE *dados = fopen(DADOS, "rb");
 
@@ -319,60 +341,41 @@ int buscarCPF(char cpf[]) // funcao criada para a verificaçao de cpf, antes est
     return -1;
 }
 
-int cpfJaCadastrado(char cpf[])
-{
-    FILE *dados = fopen(DADOS, "rb");
-
-    if (dados == NULL)
-        return 0;
-
-    Cliente cliente;
-
-    while (fread(&cliente, sizeof(Cliente), 1, dados))
-    {
-        if (strcmp(cliente.cpf, cpf) == 0)
-        {
-            fclose(dados);
-            return 1;
-        }
-    }
-
-    fclose(dados);
-    return 0;
-}
 void listarClientes()
 {
-  
-     printf(CIANO "\n====================================\n" RESET);
+
+    printf(CIANO "\n====================================\n" RESET);
     printf(CIANO "         LISTAGEM GERAL              \n" RESET);
     printf(CIANO "====================================\n\n" RESET);
 
-printf("%-15s %-20s %-6s %-15s %-25s %-6s %-10s %-12s %-12s %-12s\n",
-       "CPF", "NOME", "SEXO", "FONE", "EMAIL",
-       "IDADE", "PLANO", "DEPEND.", "VALOR", "VENCIMENTO");
+    printf("%-15s %-20s %-6s %-15s %-25s %-6s %-10s %-12s %-12s %-12s\n",
+           "CPF", "NOME", "SEXO", "FONE", "EMAIL",
+           "IDADE", "PLANO", "DEPEND.", "VALOR", "VENCIMENTO");
 
-printf("============================================================================================================\n");
+    printf("============================================================================================================\n");
 
-Cliente cliente;
-FILE *dados = fopen(DADOS, "rb");
+    Cliente cliente;
+    FILE *dados = fopen(DADOS, "rb");
 
-if (dados == NULL) {
-    printf("Dados nao encontrados!\n");
-    return;
-}
+    if (dados == NULL)
+    {
+        printf("Dados nao encontrados!\n");
+        return;
+    }
 
-while (fread(&cliente, sizeof(Cliente), 1, dados) == 1) {
+    while (fread(&cliente, sizeof(Cliente), 1, dados) == 1)
+    {
 
-    printf("%-15s %-20s %-6d %-15s %-25s %-6d %-10d %-12d R$%-10.2f %-12s\n", cliente.cpf, cliente.nome, cliente.sexo, cliente.telefone, cliente.email, cliente.idade, cliente.plano, cliente.qtdDependentes, cliente.valorPlano, cliente.vencimentoPlano);
-}
+        printf("%-15s %-20s %-6d %-15s %-25s %-6d %-10d %-12d R$%-10.2f %-12s\n", cliente.cpf, cliente.nome, cliente.sexo, cliente.telefone, cliente.email, cliente.idade, cliente.plano, cliente.qtdDependentes, cliente.valorPlano, cliente.vencimentoPlano);
+    }
 
-printf("============================================================================================================\n");
+    printf("============================================================================================================\n");
 
-fclose(dados);
+    fclose(dados);
 
-printf("\nTecle ENTER para voltar ao menu...");
-getchar();
-getchar();
+    printf("\nTecle ENTER para voltar ao menu...");
+    getchar();
+    getchar();
 }
 
 void editarCliente()
