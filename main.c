@@ -234,14 +234,60 @@ void cadastrarCliente()
         printf(CIANO "           DEPENDENTE %d           \n" RESET, i + 1);
         printf(CIANO "====================================\n\n" RESET);
 
-        printf("CPF: ");
-        scanf("%s", cliente.dependentes[i].cpf);
+        int cpfInvalido = 0;
+
+        do
+        {
+
+            printf("CPF: ");
+            scanf("%s", cliente.dependentes[i].cpf);
+
+            if (strlen(cliente.dependentes[i].cpf) != 11)
+            {
+                printf(AMARELO "CPF invalido! Digite 11 numeros.\n" RESET);
+                cpfInvalido = 1;
+            }
+
+            if (strcmp(cliente.dependentes[i].cpf, cliente.cpf) == 0)
+            {
+                printf(VERMELHO "O dependente nao pode ter o mesmo CPF do titular!\n" RESET);
+                cpfInvalido = 1;
+            }
+
+            if (cpfJaCadastrado(cliente.dependentes[i].cpf))
+            {
+                printf(VERMELHO "CPF ja cadastrado no sistema!\n" RESET);
+                cpfInvalido = 1;
+            }
+
+            for (int j = 0; j < i; j++)
+            {
+                if (strcmp(cliente.dependentes[i].cpf,
+                           cliente.dependentes[j].cpf) == 0)
+                {
+                    printf(VERMELHO "CPF de dependente ja informado!\n" RESET);
+                    cpfInvalido = 1;
+                    break;
+                }
+            }
+
+        } while (cpfInvalido);
 
         printf("Nome: ");
         scanf(" %s", cliente.dependentes[i].nome);
 
-        printf("Data de nascimento: ");
-        scanf("%s", cliente.dependentes[i].dataNascimento);
+        do
+        {
+            printf("Data de nascimento (DDMMAAAA): ");
+            scanf("%s", cliente.dependentes[i].dataNascimento);
+
+            if (!validarData(cliente.dependentes[i].dataNascimento))
+            {
+                printf(AMARELO "Data invalida!\n" RESET);
+            }
+
+        } while (!validarData(cliente.dependentes[i].dataNascimento));
+
         system("cls");
     }
 
@@ -348,34 +394,61 @@ void listarClientes()
     printf(CIANO "         LISTAGEM GERAL              \n" RESET);
     printf(CIANO "====================================\n\n" RESET);
 
-    printf("%-15s %-20s %-6s %-15s %-25s %-6s %-10s %-12s %-12s %-12s\n",
-           "CPF", "NOME", "SEXO", "FONE", "EMAIL",
-           "IDADE", "PLANO", "DEPEND.", "VALOR", "VENCIMENTO");
-
-    printf("============================================================================================================\n");
-
     Cliente cliente;
+
     FILE *dados = fopen(DADOS, "rb");
 
-    if (dados == NULL)
+    printf(CIANO "\n=================================================================================================================================================\n" RESET);
+    printf(CIANO "%-15s %-20s %-10s %-15s %-25s %-6s %-12s %-8s %-10s %-12s\n" RESET,
+           "CPF", "NOME", "SEXO", "TELEFONE", "EMAIL",
+           "IDADE", "PLANO", "DEP.", "VALOR", "VENCIMENTO");
+    printf(CIANO "===================================================================================================================================================\n" RESET);
+
+    while (fread(&cliente, sizeof(Cliente), 1, dados))
     {
-        printf("Dados nao encontrados!\n");
-        return;
+        char sexo[10];
+        char plano[15];
+
+        strcpy(sexo, cliente.sexo == 1 ? "Fem." : "Masc.");
+
+        switch (cliente.plano)
+        {
+        case 1:
+            strcpy(plano, "Ouro");
+            break;
+        case 2:
+            strcpy(plano, "Diamante");
+            break;
+        case 3:
+            strcpy(plano, "Prata");
+            break;
+        case 4:
+            strcpy(plano, "Esmeralda");
+            break;
+        }
+
+        printf("%-15s %-20s %-10s %-15s %-25s %-6d %-12s %-8d R$%-8.2f %-12s\n",
+               cliente.cpf,
+               cliente.nome,
+               sexo,
+               cliente.telefone,
+               cliente.email,
+               cliente.idade,
+               plano,
+               cliente.qtdDependentes,
+               cliente.valorPlano,
+               cliente.vencimentoPlano);
     }
 
-    while (fread(&cliente, sizeof(Cliente), 1, dados) == 1)
-    {
+    printf(CIANO "=====================================================================================================================================================\n" RESET);
 
-        printf("%-15s %-20s %-6d %-15s %-25s %-6d %-10d %-12d R$%-10.2f %-12s\n", cliente.cpf, cliente.nome, cliente.sexo, cliente.telefone, cliente.email, cliente.idade, cliente.plano, cliente.qtdDependentes, cliente.valorPlano, cliente.vencimentoPlano);
-    }
-
-    printf("============================================================================================================\n");
+    printf("\nPressione ENTER para voltar ao menu...");
+    getchar();
+    getchar();
 
     fclose(dados);
 
-    printf("\nTecle ENTER para voltar ao menu...");
-    getchar();
-    getchar();
+    system("cls");
 }
 
 void editarCliente()
@@ -445,8 +518,19 @@ void editarCliente()
         printf(CIANO "         ALTERAR IDADE             \n" RESET);
         printf(CIANO "====================================\n\n" RESET);
 
-        printf("Nova idade: ");
-        scanf("%d", &cliente.idade);
+        do
+        {
+            printf("Nova idade: ");
+            scanf("%d", &cliente.idade);
+
+            if (cliente.idade < 1 || cliente.idade > 120)
+            {
+                printf(AMARELO "Idade invalida!\n" RESET);
+            }
+
+        } while (cliente.idade < 1 || cliente.idade > 120);
+
+        cliente.valorPlano = calcularPlano(cliente);
 
         system("cls");
         break;
@@ -579,13 +663,17 @@ void listarVencimentosMes()
         printf(VERMELHO "\nDados nao encontrado.\n" RESET);
         return;
     }
+
     system("cls");
+
     char *meses[] = {
         "", "JANEIRO", "FEVEREIRO", "MARCO",
         "ABRIL", "MAIO", "JUNHO",
         "JULHO", "AGOSTO", "SETEMBRO",
         "OUTUBRO", "NOVEMBRO", "DEZEMBRO"};
+
     Cliente cliente;
+
     int dia, mesVenc, ano;
     int encontrou = 0;
     int contador = 1;
@@ -786,8 +874,30 @@ void menu()
     }
 }
 
+void boasVindas()
+{
+    printf(CIANO);
+    printf("************************************************************\n");
+    printf("*                                                          *\n");
+    printf("*                 SEJA BEM-VINDA                           *\n");
+    printf("*                                                          *\n");
+    printf("*            GRANDE E AMADA RAINHA                         *\n");
+    printf("*                  TIA AMELIARA                           *\n");
+    printf("*                                                          *\n");
+    printf("*               SISTEMA NUCLEO SAUDE                       *\n");
+    printf("*                                                          *\n");
+    printf("************************************************************\n");
+    printf(RESET);
+
+    printf("\nPressione ENTER para continuar...");
+    getchar();
+}
+
 int main()
 {
+    boasVindas();
+    system("cls");
+
     menu();
     return 0;
 }
