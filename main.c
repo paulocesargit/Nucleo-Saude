@@ -383,7 +383,12 @@ int buscarCPF(char cpf[])
         pos++;
     }
 
-    printf("\nCliente nao cadastrado!\n");
+    printf(AMARELO "\nCliente nao cadastrado!\n" RESET);
+    printf("Pressione ENTER para tentar novamente...");
+    getchar();
+    getchar();
+
+    system("cls");
 
     fclose(dados);
     return -1;
@@ -461,13 +466,21 @@ void editarCliente()
 
     char cpf[11];
 
+    printf("Digite 0 para sair.\n");
     printf("Digite o CPF do cliente: ");
     scanf("%s", cpf);
+
+    if (strcmp(cpf, "0") == 0)
+    {
+        system("cls");
+        return;
+    }
 
     int pos = buscarCPF(cpf);
 
     if (pos == -1)
     {
+        editarCliente();
         return;
     }
 
@@ -594,8 +607,21 @@ void removerCliente()
 
     char cpf[12];
 
+    printf("Digite 0 para sair.\n");
     printf("Digite o CPF do cliente que deseja remover: ");
     scanf("%s", cpf);
+
+    if (strcmp(cpf, "0") == 0)
+    {
+        system("cls");
+        return;
+    }
+
+    if (buscarCPF(cpf) == -1)
+    {
+        removerCliente();
+        return;
+    }
 
     system("cls");
 
@@ -729,7 +755,8 @@ void listarporplano()
     printf("\n1 - Ouro");
     printf("\n2 - Diamante");
     printf("\n3 - Prata");
-    printf("\n4 - Esmeralda\n");
+    printf("\n4 - Esmeralda");
+    printf("\n0 - Sair\n");
 
     do
     {
@@ -737,12 +764,19 @@ void listarporplano()
         printf("\nEscolha: ");
         scanf("%d", &plano);
 
+        if (plano == 0)
+        {
+            system("cls");
+            return;
+            break;
+        }
+
         if (plano < 1 || plano > 4)
         {
             printf(AMARELO "Opcao invalida! Digite de 1 a 4.\n" RESET);
         }
 
-    } while (plano < 1 || plano > 4);
+    } while (plano < 0 || plano > 4);
 
     FILE *dados = fopen(DADOS, "rb");
 
@@ -751,6 +785,7 @@ void listarporplano()
         printf(VERMELHO "\nDados nao encontrado.\n" RESET);
         return;
     }
+
     system("cls");
 
     switch (plano)
@@ -807,7 +842,9 @@ void listarporplano()
     fclose(dados);
 
     if (!encontrou)
+    {
         printf(AMARELO "\nNenhum cliente encontrado.\n" RESET);
+    }
 
     printf("\nPressione ENTER para voltar ao menu...");
     getchar();
