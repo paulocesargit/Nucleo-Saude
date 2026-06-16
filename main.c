@@ -234,10 +234,12 @@ void cadastrarCliente()
         printf(CIANO "           DEPENDENTE %d           \n" RESET, i + 1);
         printf(CIANO "====================================\n\n" RESET);
 
-        int cpfInvalido = 0;
+        int cpfInvalido;
 
         do
         {
+
+            cpfInvalido = 0;
 
             printf("CPF: ");
             scanf("%s", cliente.dependentes[i].cpf);
