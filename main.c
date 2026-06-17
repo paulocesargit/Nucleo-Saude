@@ -191,7 +191,7 @@ void cadastrarCliente()
     } while (1);
 
     printf("Nome: ");
-    scanf(" %[^\n]");
+    scanf(" %[^\n]", cliente.nome);
 
     do
     {
@@ -540,7 +540,7 @@ void editarCliente()
         printf(CIANO "====================================\n\n" RESET);
 
         printf("Novo nome: ");
-        scanf(" %[^\n]");
+        scanf(" %[^\n]", cliente.nome);
 
         system("cls");
         break;
