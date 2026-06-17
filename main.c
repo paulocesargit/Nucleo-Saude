@@ -190,12 +190,8 @@ void cadastrarCliente()
 
     } while (1);
 
-    getchar();
-
     printf("Nome: ");
-    fgets(cliente.nome, sizeof(cliente.nome), stdin);
-
-    cliente.nome[strcspn(cliente.nome, "\n")] = '\0';
+    scanf(" %[^\n]");
 
     do
     {
@@ -543,12 +539,8 @@ void editarCliente()
         printf(CIANO "          ALTERAR NOME             \n" RESET);
         printf(CIANO "====================================\n\n" RESET);
 
-        getchar();
-
         printf("Novo nome: ");
-        fgets(cliente.nome, sizeof(cliente.nome), stdin);
-
-        cliente.nome[strcspn(cliente.nome, "\n")] = '\0';
+        scanf(" %[^\n]");
 
         system("cls");
         break;
