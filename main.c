@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define VERMELHO "\033[31m"
 #define VERDE "\033[32m"
@@ -142,6 +143,24 @@ int cpfJaCadastrado(char cpf[])
     return 0;
 }
 
+int validarCPF(char cpf[])
+{
+    if (strlen(cpf) != 11)
+    {
+        return 0;
+    }
+
+    for (int i = 0; i < 11; i++)
+    {
+        if (!isdigit(cpf[i]))
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 void cadastrarCliente()
 {
 
@@ -156,10 +175,9 @@ void cadastrarCliente()
         printf("CPF: ");
         scanf("%s", cliente.cpf);
 
-        if (strlen(cliente.cpf) != 11)
+        if (!validarCPF(cliente.cpf))
         {
-            printf(AMARELO "CPF invalido! Digite 11 numeros.\n" RESET);
-            continue;
+            printf("CPF invalido! Digite apenas numeros e exatamente 11 digitos.\n");
         }
 
         if (cpfJaCadastrado(cliente.cpf))
@@ -172,8 +190,12 @@ void cadastrarCliente()
 
     } while (1);
 
+    getchar();
+
     printf("Nome: ");
-    scanf("%s", cliente.nome);
+    fgets(cliente.nome, sizeof(cliente.nome), stdin);
+
+    cliente.nome[strcspn(cliente.nome, "\n")] = '\0';
 
     do
     {
@@ -184,7 +206,6 @@ void cadastrarCliente()
         {
             printf(AMARELO "Opcao invalida! Digite 1 ou 2.\n" RESET);
         }
-
     } while (cliente.sexo != 1 && cliente.sexo != 2);
 
     printf("Email: ");
@@ -434,7 +455,7 @@ void listarClientes()
             break;
         }
 
-        printf("%-15s %-20s %-10s %-15s %-25s %-6d %-12s %-8d R$%-8.2f %-12s\n",
+        printf("%-15s %-30s %-10s %-15s %-25s %-6d %-12s %-8d R$%-8.2f %-12s\n",
                cliente.cpf,
                cliente.nome,
                sexo,
@@ -522,8 +543,12 @@ void editarCliente()
         printf(CIANO "          ALTERAR NOME             \n" RESET);
         printf(CIANO "====================================\n\n" RESET);
 
+        getchar();
+
         printf("Novo nome: ");
-        scanf("%s", cliente.nome);
+        fgets(cliente.nome, sizeof(cliente.nome), stdin);
+
+        cliente.nome[strcspn(cliente.nome, "\n")] = '\0';
 
         system("cls");
         break;
