@@ -426,11 +426,12 @@ void listarClientes()
 
     FILE *dados = fopen(DADOS, "rb");
 
-    printf(CIANO "\n=================================================================================================================================================\n" RESET);
-    printf(CIANO "%-15s %-20s %-10s %-15s %-25s %-6s %-12s %-8s %-10s %-12s\n" RESET,
+    printf(CIANO "===============================================================================================================================================\n" RESET);
+    printf(CIANO "%-12s %-25s %-8s %-15s %-20s %-6s %-12s %-5s %-10s %-10s\n" RESET,
            "CPF", "NOME", "SEXO", "TELEFONE", "EMAIL",
-           "IDADE", "PLANO", "DEP.", "VALOR", "VENCIMENTO");
-    printf(CIANO "===================================================================================================================================================\n" RESET);
+           "IDADE", "PLANO", "DEP", "VALOR", "VENC.");
+
+    printf(CIANO "====================================================================================================================================================\n" RESET);
 
     while (fread(&cliente, sizeof(Cliente), 1, dados))
     {
@@ -455,7 +456,7 @@ void listarClientes()
             break;
         }
 
-        printf("%-15s %-30s %-10s %-15s %-25s %-6d %-12s %-8d R$%-8.2f %-12s\n",
+        printf("%-12s %-25s %-8s %-15s %-20s %-6d %-12s %-5d R$%-8.2f %-10s\n",
                cliente.cpf,
                cliente.nome,
                sexo,
@@ -467,7 +468,6 @@ void listarClientes()
                cliente.valorPlano,
                cliente.vencimentoPlano);
     }
-
     printf(CIANO "=====================================================================================================================================================\n" RESET);
 
     printf("\nPressione ENTER para voltar ao menu...");
@@ -530,6 +530,10 @@ void editarCliente()
     printf("2 - Idade\n");
     printf("3 - Email\n");
     printf("4 - Telefone\n");
+    printf("5 - Sexo\n");
+    printf("6 - Plano\n");
+    printf("7 - Quantidade de Dependentes\n");
+    printf("8 - Vencimento\n");
     printf("0 - Sair\n");
     printf("Opcao: ");
     scanf("%d", &op);
@@ -595,6 +599,95 @@ void editarCliente()
         scanf("%s", cliente.telefone);
 
         system("cls");
+        break;
+
+    case 5:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "         ALTERAR SEXO              \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
+        do
+        {
+            printf("1 - Feminino\n");
+            printf("2 - Masculino\n");
+            printf("Novo sexo: ");
+            scanf("%d", &cliente.sexo);
+
+            if (cliente.sexo < 1 || cliente.sexo > 2)
+            {
+                printf(AMARELO "Opcao invalida!\n" RESET);
+            }
+
+        } while (cliente.sexo < 1 || cliente.sexo > 2);
+
+        cliente.valorPlano = calcularPlano(cliente);
+
+        break;
+
+    case 6:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "        ALTERAR PLANO             \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
+        do
+        {
+            printf("1 - Ouro\n");
+            printf("2 - Diamante\n");
+            printf("3 - Prata\n");
+            printf("4 - Esmeralda\n");
+
+            printf("Novo plano: ");
+            scanf("%d", &cliente.plano);
+
+            if (cliente.plano < 1 || cliente.plano > 4)
+            {
+                printf(AMARELO "Plano invalido!\n" RESET);
+            }
+
+        } while (cliente.plano < 1 || cliente.plano > 4);
+
+        cliente.valorPlano = calcularPlano(cliente);
+
+        break;
+
+    case 7:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "   ALTERAR DEPENDENTES            \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
+        do
+        {
+            printf("Nova quantidade: ");
+            scanf("%d", &cliente.qtdDependentes);
+
+            if (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10)
+            {
+                printf(AMARELO "Quantidade invalida!\n" RESET);
+            }
+
+        } while (cliente.qtdDependentes < 0 || cliente.qtdDependentes > 10);
+
+        cliente.valorPlano = calcularPlano(cliente);
+
+        break;
+
+    case 8:
+        printf(CIANO "\n====================================\n" RESET);
+        printf(CIANO "      ALTERAR VENCIMENTO          \n" RESET);
+        printf(CIANO "====================================\n\n" RESET);
+
+        do
+        {
+            printf("Novo vencimento (DDMMAAAA): ");
+            scanf("%s", cliente.vencimentoPlano);
+
+            if (!validarData(cliente.vencimentoPlano))
+            {
+                printf(AMARELO "Data invalida!\n" RESET);
+            }
+
+        } while (!validarData(cliente.vencimentoPlano));
+
         break;
 
     case 0:
