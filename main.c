@@ -1205,12 +1205,8 @@ void boasVindas()
     printf(CIANO);
     printf("************************************************************\n");
     printf("*                                                          *\n");
-    printf("*                 SEJA BEM-VINDA                           *\n");
-    printf("*                                                          *\n");
-    printf("*            GRANDE E AMADA RAINHA                         *\n");
-    printf("*                  TIA AMELIARA                           *\n");
-    printf("*                                                          *\n");
-    printf("*               SISTEMA NUCLEO SAUDE                       *\n");
+    printf("*                 SEJA BEM-VINDO(A)                        *\n");
+    printf("*              SISTEMA NUCLEO SAUDE                        *\n");
     printf("*                                                          *\n");
     printf("************************************************************\n");
     printf(RESET);
