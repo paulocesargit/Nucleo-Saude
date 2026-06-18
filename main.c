@@ -1213,7 +1213,7 @@ void boasVindas()
     printf("************************************************************\n");
     printf(RESET);
 
-    printf("\nPressione ENTER para continuar...");
+    printf("\nPressione ENTER para continuar....");
     getchar();
 }
 
