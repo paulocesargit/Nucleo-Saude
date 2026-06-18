@@ -1216,6 +1216,8 @@ void boasVindas()
     printf("*                 SEJA BEM-VINDO(A)                        *\n");
     printf("*              SISTEMA NUCLEO SAUDE                        *\n");
     printf("*                                                          *\n");
+    printf("*                                                          *\n");
+    printf("*                                                          *\n");
     printf("************************************************************\n");
     printf(RESET);
 
